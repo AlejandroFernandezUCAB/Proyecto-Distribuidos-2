@@ -5,6 +5,7 @@
  */
 package servidorsocket;
 
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,14 +25,19 @@ public class ServidorSocket {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        ServerSocket listener = new ServerSocket(9092);
+        ServerSocket listener = new ServerSocket(9093);
+        Transporte hola = new Transporte(1,null);
+        Gson hola2 = new Gson();
+        String hola4 = hola2.toJson(hola);
+        Transporte hola3 = new Transporte();
+        hola3 = hola2.fromJson( hola4, Transporte.class);
         try {
             while (true) {
                 Socket socket = listener.accept();
                 try {
                     PrintWriter out =
                         new PrintWriter(socket.getOutputStream(), true);
-                    out.println(listener);
+                    out.println();
                 } finally {
                     socket.close();
                 }
