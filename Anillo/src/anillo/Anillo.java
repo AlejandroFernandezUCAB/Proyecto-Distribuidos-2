@@ -31,6 +31,7 @@ public class Anillo {
         String serverAddress = "127.0.0.1";
         int tiempoDeSalida = 5;
         ArrayList<Transporte> cargaUtil = cargaUtil();
+        envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
         //Aqui deberia haber un if que diga si es el almacen principal
         if (servidorPrincipal == true){
             try {
@@ -94,4 +95,24 @@ public class Anillo {
         }
         return transportes;
     }
+    
+    public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
+       
+        if (servidorPrincipal == true){
+            try {
+                for ( Transporte transporte : cargaUtil){
+                    Gson gson = new Gson();
+                    String gsonAEnviar = gson.toJson( transporte, Transporte.class);
+                    Socket socket = new Socket(serverAddress, 9093);
+                    PrintWriter out =
+                            new PrintWriter(socket.getOutputStream(), true);
+                        //Se manda a traves del socket
+                        out.println( gsonAEnviar );
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Anillo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
 }
