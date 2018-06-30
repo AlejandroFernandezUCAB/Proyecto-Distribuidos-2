@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectodistribuidos;
+package clientesocket;
 
 /**
  *
  * @author pedro
  */
-public class ProyectoDistribuidos {
+public class ClienteSocket {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Hola mundo");
+        // TODO code application logic here
     }
     
 }
