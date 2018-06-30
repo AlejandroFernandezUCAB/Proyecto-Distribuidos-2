@@ -3,3 +3,5 @@
 /build/
 /ServidorSocket/nbproject/private/
 /ClienteSocket/nbproject/private/
+/ServidorSocket/build/
+/ClienteSocket/build/
