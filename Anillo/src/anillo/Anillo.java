@@ -32,20 +32,7 @@ public class Anillo {
         int tiempoDeSalida = 5;
         ArrayList<Transporte> cargaUtil = cargaUtil();
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
-        //Aqui deberia haber un if que diga si es el almacen principal
-        if (servidorPrincipal == true){
-            try {
-                
-                Socket socket = new Socket(serverAddress, 9093);
-                PrintWriter out =
-                        new PrintWriter(socket.getOutputStream(), true);
-                    //Se manda a traves del socket
-                    out.println();
 
-            } catch (IOException ex) {
-                Logger.getLogger(Anillo.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
         
         try{
             
