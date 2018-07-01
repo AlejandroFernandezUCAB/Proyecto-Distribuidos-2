@@ -41,6 +41,7 @@ public class Cliente extends Thread{
         this._numeroNodo = _numeroNodo;
     }
     
+    
     public static void procesamientoDePaquetes( Transporte transporte, int numeroNodo){
         
         for (int i = 0; i < transporte._paquetes.size(); i++) {

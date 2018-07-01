@@ -28,8 +28,10 @@ public class Anillo {
      */
     public static void main(String[] args) {
         Boolean servidorPrincipal = true;
+        // serverAddress = direccion del siguiente nodo del anillo
         String serverAddress = "192.168.1.250";
         int tiempoDeSalida = 5;
+        // identificador de este nodo en el anillo
         int numeroNodo = 0;
         ArrayList<Transporte> cargaUtil = cargaUtil(servidorPrincipal);
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
@@ -45,7 +47,8 @@ public class Anillo {
                 System.out.print("Nodo escuchando por el puerto " + 9001);
                 System.out.println("Esperando por el transporte numero " + i);
                 Socket socket = socketServidor.accept();
-                new Cliente(socket, numeroNodo).start();
+                Cliente cliente = new Cliente(socket, numeroNodo);
+                cliente.start();
                 
             }
         }catch (Exception e){
@@ -68,7 +71,7 @@ public class Anillo {
             for (int i = 0; i < 3; i++) {
                 paquetes = new ArrayList<>();
                 //For de adentro para llenar los paquetes
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < 5; j++) {
                     paquete = new Paquete();
                     paquetes.add(paquete);
                 }
@@ -85,11 +88,15 @@ public class Anillo {
        
         if (servidorPrincipal == true){
             try {
+                // enviamos cada uno de los 3 transportes
                 for ( Transporte transporte : cargaUtil){
                     
                     Thread.sleep(5000);
+                    // serializamos
                     Gson gson = new Gson();
                     String gsonAEnviar = gson.toJson( transporte, Transporte.class);
+                    // enviamos por el socket del servidor
+                    // (el siguiente nodo)
                     Socket socket = new Socket(serverAddress, 9001);
                     PrintWriter out =
                             new PrintWriter(socket.getOutputStream(), true);
