@@ -37,12 +37,12 @@ public class Anillo {
         //Aqui es donde se reciben los paquetes y se tiene que hacer concurrente
         try{
             
-            ServerSocket socketServidor = new ServerSocket(9000);
+            ServerSocket socketServidor = new ServerSocket(9001);
             int i = 0;
             //Se aceptan las conexiones
             while (true) {
                 i++;
-                System.out.print("Nodo escuchando por el puerto " + 9000);
+                System.out.print("Nodo escuchando por el puerto " + 9001);
                 System.out.println("Esperando por el transporte numero " + i);
                 Socket socket = socketServidor.accept();
                 new Cliente(socket, numeroNodo).start();
