@@ -30,6 +30,7 @@ public class Anillo {
         Boolean servidorPrincipal = true;
         String serverAddress = "192.168.1.1";
         int tiempoDeSalida = 5;
+        int numeroNodo = 0;
         ArrayList<Transporte> cargaUtil = cargaUtil();
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
 
@@ -44,7 +45,7 @@ public class Anillo {
                 System.out.print("Nodo escuchando por el puerto " + 9000);
                 System.out.println("Esperando por el transporte numero " + i);
                 Socket socket = socketServidor.accept();
-                new Cliente(socket).start();
+                new Cliente(socket, numeroNodo).start();
             }
         }catch (Exception e){
             
