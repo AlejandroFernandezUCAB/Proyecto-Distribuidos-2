@@ -20,7 +20,8 @@ public class Paquete {
     public Paquete() {
         this._carga = ThreadLocalRandom.current().nextInt(0,1000);
         this._tiempo = 5;       
-        this._nodoDestino = ThreadLocalRandom.current().nextInt(0,4);
+        // por ahora le pondre 3
+        this._nodoDestino = ThreadLocalRandom.current().nextInt(0,2);
     }
     
     

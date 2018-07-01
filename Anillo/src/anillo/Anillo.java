@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package anillo;
+// test
+//
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -27,12 +29,20 @@ public class Anillo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Boolean servidorPrincipal = true;
+        
         // serverAddress = direccion del siguiente nodo del anillo
-        String serverAddress = "192.168.1.250";
+        //String serverAddress = "192.168.1.250";
+        String serverAddress = JOptionPane.showInputDialog(
+            "Ip del siguiente nodo:");
+        int reply = JOptionPane.showConfirmDialog(null, "Es usted el que genera los transportes?\nSolo Puede haber uno", "Pregunta", JOptionPane.YES_NO_OPTION);
+        Boolean servidorPrincipal = (reply == JOptionPane.YES_OPTION);
         int tiempoDeSalida = 5;
         // identificador de este nodo en el anillo
-        int numeroNodo = 0;
+        int numeroNodo = Integer.parseInt(JOptionPane.showInputDialog(
+            "Ip del siguiente nodo:"));
+        
+        System.out.println("Iniciado el nodo " + numeroNodo);
+        
         ArrayList<Transporte> cargaUtil = cargaUtil(servidorPrincipal);
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
 
@@ -41,14 +51,27 @@ public class Anillo {
             
             ServerSocket socketServidor = new ServerSocket(9001);
             int i = 0;
+            int transportesRecibidos = 0;
+            System.out.println("Escuchando por el puerto " + 9001);
             //Se aceptan las conexiones
             while (true) {
-                i++;
-                System.out.print("Nodo escuchando por el puerto " + 9001);
-                System.out.println("Esperando por el transporte numero " + i);
+               
+                // el cliente se bloquea y espera a que le llegue el mensaje
+                // osea se convierte en servidor
                 Socket socket = socketServidor.accept();
-                Cliente cliente = new Cliente(socket, numeroNodo);
+                // aca el serverAddress seria la ip del siguiente nodo
+                Cliente cliente = new Cliente(socket, numeroNodo, serverAddress);
                 cliente.start();
+                
+                transportesRecibidos++;
+                
+                // hay 3 transportes
+                // cada vez que me llegen 3 imprimo esto
+                i = (i+1)%3;
+                if(i == 2){
+                
+                System.out.println("Numero de Transportes Recibidos " + transportesRecibidos);
+                }           
                 
             }
         }catch (Exception e){
@@ -62,6 +85,7 @@ public class Anillo {
     public static ArrayList<Transporte> cargaUtil(Boolean servidorPrincipal){
         // si no eres un servidor principal no tienes que generar la carga util
         if(servidorPrincipal == true){
+            System.out.println("Inicializando Carga util...");
             ArrayList<Transporte> transportes = new ArrayList<>();
             ArrayList<Paquete> paquetes = new ArrayList<>();
             Paquete paquete;
@@ -69,6 +93,7 @@ public class Anillo {
 
             //For de afuera para llenar el transporte
             for (int i = 0; i < 3; i++) {
+                
                 paquetes = new ArrayList<>();
                 //For de adentro para llenar los paquetes
                 for (int j = 0; j < 5; j++) {
@@ -87,6 +112,7 @@ public class Anillo {
     public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
        
         if (servidorPrincipal == true){
+            System.out.println("Enviando Transportes");
             try {
                 // enviamos cada uno de los 3 transportes
                 for ( Transporte transporte : cargaUtil){
