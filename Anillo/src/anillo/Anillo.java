@@ -45,10 +45,10 @@ public class Anillo {
         //Aqui es donde se reciben los paquetes y se tiene que hacer concurrente
         try{
             
-            ServerSocket socketServidor = new ServerSocket(9001);
+            ServerSocket socketServidor = new ServerSocket(9003);
             int i = 0;
             int transportesRecibidos = 0;
-            System.out.println("Info ---> Escuchando por el puerto " + 9001);
+            System.out.println("Info ---> Escuchando por el puerto " + 9003);
             //Se aceptan las conexiones
             while (true) {
                
@@ -119,7 +119,7 @@ public class Anillo {
                     String gsonAEnviar = gson.toJson( transporte, Transporte.class);
                     // enviamos por el socket del servidor
                     // (el siguiente nodo)
-                    Socket socket = new Socket(serverAddress, 9001);
+                    Socket socket = new Socket(serverAddress, 9003);
                     PrintWriter out =
                             new PrintWriter(socket.getOutputStream(), true);
                         //Se manda a traves del socket
