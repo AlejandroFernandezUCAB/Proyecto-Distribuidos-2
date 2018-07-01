@@ -81,6 +81,7 @@ public class Anillo {
         if (servidorPrincipal == true){
             try {
                 for ( Transporte transporte : cargaUtil){
+                    
                     Thread.sleep(5000);
                     Gson gson = new Gson();
                     String gsonAEnviar = gson.toJson( transporte, Transporte.class);

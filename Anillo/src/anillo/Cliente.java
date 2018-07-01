@@ -48,10 +48,17 @@ public class Cliente extends Thread{
                 Paquete paquete = transporte._paquetes.get(i);
                 //Descargo el paquete
                 sleep(10000);
-                //Si esto sucede es porque es para mi
+                //Si esto sucede es porque es para mi y lo saco de donde esta
                 if( paquete._nodoDestino == numeroNodo){
+                    
                     transporte._paquetes.remove(i);
+                    
+                }else{
+                    
+                    transporte._paquetes.get(i)._tiempo += 10;  
+                    
                 }
+                
             } catch (Exception e) {
             }
         }
