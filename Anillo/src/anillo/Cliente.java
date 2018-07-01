@@ -49,7 +49,7 @@ public class Cliente extends Thread{
     
     
     public static Transporte procesamientoDePaquetes( Transporte transporte, int numeroNodo){
-        System.out.println("Recibido Transporte id: " + transporte._id);
+        System.out.println("Recibir ---> Recibido Transporte id: " + transporte._id);
         for (int i = 0; i < transporte._paquetes.size(); i++) {
             try {
                 Paquete paquete = transporte._paquetes.get(i);
@@ -57,7 +57,7 @@ public class Cliente extends Thread{
                 sleep(10000);
                 //Si esto sucede es porque es para mi y lo saco de donde esta
                 if( paquete._nodoDestino == numeroNodo){
-                    System.out.println("Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
+                    System.out.println("Procesar ---> Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
                     transporte._paquetes.remove(i);
                     
                 }else{
@@ -74,11 +74,14 @@ public class Cliente extends Thread{
     public void enviarToken( Transporte transporte ){
         try {
                 if(transporte._paquetes.size() == 0){
-                    System.out.println("Transporte " + transporte._id + " vacio!");
+                    System.out.println("Enviar ---> Envio Transporte (id:" +transporte._id+") VACIO al siguiente nodo");
                     //return;
                 }
+                else{
+                    System.out.println("Enviar ---> Envio Transporte (id:" +transporte._id+") al siguiente nodo");
+                }
                 // envialo al siguiente nodo
-                System.out.println("Envio Transporte (id:" +transporte._id+") al siguiente nodo");
+                
                     Thread.sleep(5000);
                     // serializamos
                     Gson gson = new Gson();
