@@ -28,7 +28,7 @@ public class Anillo {
      */
     public static void main(String[] args) {
         Boolean servidorPrincipal = true;
-        String serverAddress = "192.168.1.1";
+        String serverAddress = "192.168.1.250";
         int tiempoDeSalida = 5;
         int numeroNodo = 0;
         ArrayList<Transporte> cargaUtil = cargaUtil();
@@ -85,7 +85,7 @@ public class Anillo {
                     Thread.sleep(5000);
                     Gson gson = new Gson();
                     String gsonAEnviar = gson.toJson( transporte, Transporte.class);
-                    Socket socket = new Socket(serverAddress, 9000);
+                    Socket socket = new Socket(serverAddress, 9001);
                     PrintWriter out =
                             new PrintWriter(socket.getOutputStream(), true);
                         //Se manda a traves del socket
