@@ -45,12 +45,12 @@ public class Cliente extends Thread{
         
         for (int i = 0; i < transporte._paquetes.size(); i++) {
             try {
-                Paquete paquete = transporte._paquetes.get(i-1);
+                Paquete paquete = transporte._paquetes.get(i);
                 //Descargo el paquete
                 sleep(10000);
                 //Si esto sucede es porque es para mi
                 if( paquete._nodoDestino == numeroNodo){
-                    transporte._paquetes.remove(i-1);
+                    transporte._paquetes.remove(i);
                 }
             } catch (Exception e) {
             }
