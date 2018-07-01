@@ -28,31 +28,23 @@ public class Anillo {
      */
     public static void main(String[] args) {
         Boolean servidorPrincipal = true;
-        String serverAddress = "127.0.0.1";
+        String serverAddress = "192.168.1.1";
         int tiempoDeSalida = 5;
         ArrayList<Transporte> cargaUtil = cargaUtil();
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
 
-        
+        //Aqui es donde se reciben los paquetes y se tiene que hacer concurrente
         try{
             
             ServerSocket socketServidor = new ServerSocket(9000);
+            int i = 0;
             //Se aceptan las conexiones
             while (true) {
-                
+                i++;
+                System.out.print("Nodo escuchando por el puerto " + 9000);
+                System.out.println("Esperando por el transporte numero " + i);
                 Socket socket = socketServidor.accept();
-                try {
-                    //Se setea por donde se envia
-                    Gson parseGson = new Gson();
-                    BufferedReader input =
-                            new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                    String answer = input.readLine();
-                    Transporte hola = new Transporte();
-                    hola = parseGson.fromJson( answer , Transporte.class);
-                } finally {
-                    socket.close();
-                }
+                new Cliente(socket).start();
             }
         }catch (Exception e){
             
@@ -88,16 +80,17 @@ public class Anillo {
         if (servidorPrincipal == true){
             try {
                 for ( Transporte transporte : cargaUtil){
+                    Thread.sleep(5000);
                     Gson gson = new Gson();
                     String gsonAEnviar = gson.toJson( transporte, Transporte.class);
-                    Socket socket = new Socket(serverAddress, 9093);
+                    Socket socket = new Socket(serverAddress, 9000);
                     PrintWriter out =
                             new PrintWriter(socket.getOutputStream(), true);
                         //Se manda a traves del socket
                         out.println( gsonAEnviar );
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(Anillo.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException | InterruptedException ex) {
+                System.out.println(ex.getMessage());
             }
         }
     }
