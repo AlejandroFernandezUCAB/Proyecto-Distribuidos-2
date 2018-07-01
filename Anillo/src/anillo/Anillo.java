@@ -52,7 +52,7 @@ public class Anillo {
             ServerSocket socketServidor = new ServerSocket(9001);
             int i = 0;
             int transportesRecibidos = 0;
-            System.out.println("Escuchando por el puerto " + 9001);
+            System.out.println("Info ---> Escuchando por el puerto " + 9001);
             //Se aceptan las conexiones
             while (true) {
                
@@ -70,7 +70,7 @@ public class Anillo {
                 i = (i+1)%3;
                 if(i == 2){
                 
-                System.out.println("Numero de Transportes Recibidos " + transportesRecibidos);
+                System.out.println("\nInfo ---> Numero de Transportes Recibidos " + transportesRecibidos);
                 }           
                 
             }
@@ -85,7 +85,7 @@ public class Anillo {
     public static ArrayList<Transporte> cargaUtil(Boolean servidorPrincipal){
         // si no eres un servidor principal no tienes que generar la carga util
         if(servidorPrincipal == true){
-            System.out.println("Inicializando Carga util...");
+            System.out.println("Info ---> Inicializando Carga util...");
             ArrayList<Transporte> transportes = new ArrayList<>();
             ArrayList<Paquete> paquetes = new ArrayList<>();
             Paquete paquete;
@@ -112,7 +112,7 @@ public class Anillo {
     public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
        
         if (servidorPrincipal == true){
-            System.out.println("Enviando Transportes");
+            System.out.println("Enviar ---> Enviando Transportes");
             try {
                 // enviamos cada uno de los 3 transportes
                 for ( Transporte transporte : cargaUtil){
