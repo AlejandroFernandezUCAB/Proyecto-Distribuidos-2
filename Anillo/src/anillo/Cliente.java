@@ -50,7 +50,7 @@ public class Cliente extends Thread{
                 sleep(10000);
                 //Si esto sucede es porque es para mi y lo saco de donde esta
                 if( paquete._nodoDestino == numeroNodo){
-                    
+                    System.out.println("Recibi un Paquete! lo quito del Transporte");
                     transporte._paquetes.remove(i);
                     
                 }else{

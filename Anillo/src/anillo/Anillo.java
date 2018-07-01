@@ -31,7 +31,7 @@ public class Anillo {
         String serverAddress = "192.168.1.250";
         int tiempoDeSalida = 5;
         int numeroNodo = 0;
-        ArrayList<Transporte> cargaUtil = cargaUtil();
+        ArrayList<Transporte> cargaUtil = cargaUtil(servidorPrincipal);
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
 
         //Aqui es donde se reciben los paquetes y se tiene que hacer concurrente
@@ -46,6 +46,7 @@ public class Anillo {
                 System.out.println("Esperando por el transporte numero " + i);
                 Socket socket = socketServidor.accept();
                 new Cliente(socket, numeroNodo).start();
+                
             }
         }catch (Exception e){
             
@@ -55,25 +56,29 @@ public class Anillo {
         
     }
  
-    public static ArrayList<Transporte> cargaUtil(){
-        ArrayList<Transporte> transportes = new ArrayList<>();
-        ArrayList<Paquete> paquetes = new ArrayList<>();
-        Paquete paquete;
-        Transporte transporte;
-        
-        //For de afuera para llenar el transporte
-        for (int i = 0; i < 3; i++) {
-            paquetes = new ArrayList<>();
-            //For de adentro para llenar los paquetes
-            for (int j = 0; j < 4; j++) {
-                paquete = new Paquete();
-                paquetes.add(paquete);
+    public static ArrayList<Transporte> cargaUtil(Boolean servidorPrincipal){
+        // si no eres un servidor principal no tienes que generar la carga util
+        if(servidorPrincipal == true){
+            ArrayList<Transporte> transportes = new ArrayList<>();
+            ArrayList<Paquete> paquetes = new ArrayList<>();
+            Paquete paquete;
+            Transporte transporte;
+
+            //For de afuera para llenar el transporte
+            for (int i = 0; i < 3; i++) {
+                paquetes = new ArrayList<>();
+                //For de adentro para llenar los paquetes
+                for (int j = 0; j < 4; j++) {
+                    paquete = new Paquete();
+                    paquetes.add(paquete);
+                }
+
+                transporte = new Transporte(i, paquetes);
+                transportes.add(transporte);
             }
-            
-            transporte = new Transporte(i, paquetes);
-            transportes.add(transporte);
+            return transportes;
         }
-        return transportes;
+        return null;
     }
     
     public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
