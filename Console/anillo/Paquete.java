@@ -9,8 +9,8 @@ public class Paquete {
     public Paquete() {
         this._carga = ThreadLocalRandom.current().nextInt(0,1000);
         this._tiempo = 5;       
-        // por ahora le pondre 3
-        this._nodoDestino = ThreadLocalRandom.current().nextInt(0,2);
+        // por ahora le pondre 4
+        this._nodoDestino = ThreadLocalRandom.current().nextInt(0,3);
     }
     
     
