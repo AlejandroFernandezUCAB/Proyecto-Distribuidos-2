@@ -1,4 +1,7 @@
 import com.google.gson.Gson;
+
+import org.omg.DynamicAny._DynArrayStub;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,11 +44,17 @@ public class Cliente extends Thread{
         System.out.println("Recibir ---> Recibido Transporte id: " + transporte._id);
         for (int i = 0; i < transporte._paquetes.size(); i++) {
             try {
+
                 Paquete paquete = transporte._paquetes.get(i);
-                //Descargo el paquete
-                sleep(10000);
+                
+
                 //Si esto sucede es porque es para mi y lo saco de donde esta
-                if( paquete._nodoDestino == numeroNodo){
+                if( paquete._nodoDestino == numeroNodo ){
+                   
+                    //Ejecutando el hilo del cliente
+                    Escritorio _escritorioHilo = new Escritorio( transporte._paquetes.get(i));
+                    _escritorioHilo.start();
+                    System.out.println("Hay" + _escritorioHilo.activeCount() + " hilos corriendo");
                     System.out.println("Procesar ---> Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
                     transporte._paquetes.remove(i);
                     
@@ -60,6 +69,7 @@ public class Cliente extends Thread{
         }
         return transporte;
     }
+
     public void enviarToken( Transporte transporte ){
         try {
                 if(transporte._paquetes.size() == 0){
