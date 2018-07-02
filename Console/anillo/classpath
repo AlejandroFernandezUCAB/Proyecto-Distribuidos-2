@@ -4,5 +4,6 @@ fuente: https://stackoverflow.com/questions/2096283/including-jars-in-classpath-
 nota: el punto al final es para incluir el directorio actual, todos se separan por ':'
 
 windows:
-set CLASSPATH=gson-2.6.2.jar:.
+set CLASSPATH=./;./gson-2.6.2.jar
 fuente:https://docs.oracle.com/javase/7/docs/technotes/tools/windows/classpath.html
+https://stackoverflow.com/questions/13537668/javac-cannot-find-symbol
