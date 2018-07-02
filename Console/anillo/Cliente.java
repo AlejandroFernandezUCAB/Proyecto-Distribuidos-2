@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+
 public class Cliente extends Thread{
     
     public Socket _socket;

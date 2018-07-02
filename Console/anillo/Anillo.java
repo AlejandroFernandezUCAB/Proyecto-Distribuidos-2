@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.util.Scanner;
 
 public class Anillo {
 
@@ -16,17 +17,18 @@ public class Anillo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        Scanner reader = new Scanner(System.in);
         // serverAddress = direccion del siguiente nodo del anillo
         //String serverAddress = "192.168.1.250";
-        String serverAddress = JOptionPane.showInputDialog(
-            "Ip del siguiente nodo:");
-        int reply = JOptionPane.showConfirmDialog(null, "Es usted el que genera los transportes?\nSolo Puede haber uno", "Pregunta", JOptionPane.YES_NO_OPTION);
-        Boolean servidorPrincipal = (reply == JOptionPane.YES_OPTION);
+        System.out.println("Ip del siguiente nodo:");
+        String serverAddress = reader.nextLine();
+        System.out.println("Es usted el que genera los transportes?\nSolo Puede haber uno (1:si / 0: no):");
+        int reply = reader.nextInt();
+        Boolean servidorPrincipal = (reply == 1);
         int tiempoDeSalida = 5;
         // identificador de este nodo en el anillo
-        int numeroNodo = Integer.parseInt(JOptionPane.showInputDialog(
-            "Ip del siguiente nodo:"));
+        System.out.print("Numero de nodo: ");
+        int numeroNodo = reader.nextInt();
         
         System.out.println("Iniciado el nodo " + numeroNodo);
         
