@@ -25,7 +25,22 @@ public class Client {
          System.out.println("Obtaining ring Addresses!...");
          // Calling the remote method using the obtained object 
          List<String> addresses = (List<String>)stub.ringAddresses(); 
-        
+         // Esta rutina seria para esperar que el anillo se complete
+         // un tamano especifico
+         /*
+         if(addresses.size() < 4){
+            System.out.print("The ring must have at least 4 nodes");
+            System.out.print("Waiting for the nodes to join...");
+            try {
+                while (addresses.size() < 4) {
+                    Thread.sleep(3000);
+                    addresses = (List<String>)stub.ringAddresses();    
+                }
+            } catch (InterruptedException  e) {
+                //TODO: handle exception
+            }
+         }
+        */
          System.out.println("Returned info:\n");
          for (String address : addresses) {
              System.out.printf("->%s",address);
