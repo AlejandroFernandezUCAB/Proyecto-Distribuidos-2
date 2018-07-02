@@ -1,5 +1,5 @@
 linux:
-export CLASSPATH=/home/gian/Documents/Proyecto-Distribuidos-2/Console/anillo/gson-2.6.2.jar:.
+export CLASSPATH=./gson-2.6.2.jar:.
 fuente: https://stackoverflow.com/questions/2096283/including-jars-in-classpath-on-commandline-javac-or-apt
 nota: el punto al final es para incluir el directorio actual, todos se separan por ':'
 
