@@ -9,3 +9,6 @@
 /Anillo/build/
 /Anillo/dist/
 **/*.class
+/NetBeans/Anillo/build/
+/NetBeans/Anillo/dist/
+/NetBeans/Anillo/nbproject/private/
