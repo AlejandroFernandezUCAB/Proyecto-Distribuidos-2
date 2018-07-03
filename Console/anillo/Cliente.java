@@ -41,6 +41,8 @@ public class Cliente extends Thread{
     
     
     public static Transporte procesamientoDePaquetes( Transporte transporte, int numeroNodo){
+        ActiveWorkers instancia = ActiveWorkers.getInstance();
+        
         System.out.println("Recibir ---> Recibido Transporte id: " + transporte._id);
         for (int i = 0; i < transporte._paquetes.size(); i++) {
             try {
@@ -49,12 +51,13 @@ public class Cliente extends Thread{
                 
 
                 //Si esto sucede es porque es para mi y lo saco de donde esta
-                if( paquete._nodoDestino == numeroNodo ){
+                if( paquete._nodoDestino == numeroNodo && instancia.getCount() < 3 ){
                    
                     //Ejecutando el hilo del cliente
                     Escritorio _escritorioHilo = new Escritorio( transporte._paquetes.get(i));
+                    instancia.addWorker();
                     _escritorioHilo.start();
-                    System.out.println("Hay" + _escritorioHilo.activeCount() + " hilos corriendo");
+                    System.out.println("Hay" + instancia.getCount() + " Trabajadores activos");
                     System.out.println("Procesar ---> Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
                     transporte._paquetes.remove(i);
                     
