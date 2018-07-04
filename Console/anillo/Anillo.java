@@ -105,7 +105,7 @@ public class Anillo {
     
     
     public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
-       
+        
         if (servidorPrincipal == true){
             System.out.println("Enviar ---> Enviando Transportes");
             try {

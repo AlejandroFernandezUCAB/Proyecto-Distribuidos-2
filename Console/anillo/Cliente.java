@@ -115,7 +115,10 @@ public class Cliente extends Thread{
 
 
             } catch (Exception ex) {
+                
                 System.out.println(ex.getMessage());
+                System.out.println("Reintentando conexion");
+                enviarToken( transporte );
         }
         
     }
