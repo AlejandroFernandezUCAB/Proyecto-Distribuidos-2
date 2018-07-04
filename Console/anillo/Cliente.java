@@ -114,7 +114,8 @@ public class Cliente extends Thread{
                         out.println( gsonAEnviar );
 
 
-            } catch (IOException | InterruptedException ex) {
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
         }
         
     }
@@ -125,7 +126,6 @@ public class Cliente extends Thread{
         try{
             //Mientras el transpote tenga menos de 5 paquetes
             while ( transporte._paquetes.size() <  5){
-                System.out.println("Info ----------> Cargando transporte");
                 //Si tengo paquetes en la cola
                 if ( instancia.tamano() > 0) {
                     System.out.println("Cargando un paquete al transporte (id:"+ transporte._id +" )");

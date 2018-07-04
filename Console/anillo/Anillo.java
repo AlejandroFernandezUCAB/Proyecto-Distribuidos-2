@@ -84,7 +84,7 @@ public class Anillo {
             Transporte transporte;
 
             //For de afuera para llenar el transporte
-            for (int i = 0; i < 3; i++) {
+            for (int i = 1; i <= 3; i++) {
                 
                 paquetes = new ArrayList<>();
                 //For de adentro para llenar los paquetes
