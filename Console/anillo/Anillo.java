@@ -6,10 +6,17 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.util.Scanner;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.NotBoundException;
+import java.net.*;
+// import java.util.Enumeration;
 
 public class Anillo {
 
@@ -17,29 +24,69 @@ public class Anillo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Registry registry = null;
+        // usa este objeto para obtener la info del anillo del servidor
+        RingInfo _ringInfo = null;
+        // usa este objeto para proveer data al servidor de estadisticas
+        Estadisticas _estadisticas = null;
+        try {
+            // Getting the registry (Servidor de estadisticas: 192.168.1.249)
+            registry = LocateRegistry.getRegistry("192.168.1.249",Registry.REGISTRY_PORT);
+            // Looking up the registry for the remote objects 
+            _ringInfo = (RingInfo) registry.lookup("RingInfo"); 
+            _estadisticas = (Estadisticas) registry.lookup("Estadisticas"); 
+
+        // OBTENIENDO MI IP
+        InetAddress IP = Cliente.getLocalHostLANAddress();
+        System.out.println("IP of my system is := "+IP.getHostAddress());
+        System.out.println("Registering ip on server!...");
+        _ringInfo.addAddress(IP.getHostAddress());
+
+        System.out.println("Obtaining ring Addresses!...");
+         // Calling the remote method using the obtained object 
+         List<String> addresses = (List<String>)_ringInfo.ringAddresses(); 
+         
+         // Esta rutina seria para esperar que el anillo se complete
+         // un tamano especifico
+         if(addresses.size() < 4){
+            System.out.print("The ring must have at least 4 nodes");
+            System.out.print("Waiting for the nodes to join...");
+            while (addresses.size() < 4) {
+                Thread.sleep(3000);
+                addresses = (List<String>)_ringInfo.ringAddresses();    
+            }
+            
+         }
+        
+
         Packets colaDePaquetes = Packets.getInstance();
         System.out.println("Se crearon:" + colaDePaquetes.tamano() + " Paquetes");
 
-        Scanner reader = new Scanner(System.in);
-        // serverAddress = direccion del siguiente nodo del anillo
-        //String serverAddress = "192.168.1.250";
-        System.out.println("Ip del siguiente nodo:");
-        String serverAddress = reader.nextLine();
-        System.out.println("Es usted el que genera los transportes?\nSolo Puede haber uno (1:si / 0: no):");
-        int reply = reader.nextInt();
-        Boolean servidorPrincipal = (reply == 1);
+        int numeroNodo = addresses.indexOf(IP.getHostAddress());
+        // el siguiente, hay 4 nodos
+        String serverAddress = addresses.get((numeroNodo+1)%4);
         int tiempoDeSalida = 5;
-        // identificador de este nodo en el anillo
-        System.out.print("Numero de nodo: ");
-        int numeroNodo = reader.nextInt();
-        reader.close();
+        Boolean servidorPrincipal = (numeroNodo == 0);
+
+        // Scanner reader = new Scanner(System.in);
+        // // serverAddress = direccion del siguiente nodo del anillo
+        // //String serverAddress = "192.168.1.250";
+        // System.out.println("Ip del siguiente nodo:");
+        // String serverAddress = reader.nextLine();
+        // System.out.println("Es usted el que genera los transportes?\nSolo Puede haber uno (1:si / 0: no):");
+        // int reply = reader.nextInt();
+        // Boolean servidorPrincipal = (reply == 1);
+        
+        // // identificador de este nodo en el anillo
+        // System.out.print("Numero de nodo: ");
+        // int numeroNodo = reader.nextInt();
+        
         System.out.println("Iniciado el nodo " + numeroNodo);
         
         ArrayList<Transporte> cargaUtil = cargaUtil(servidorPrincipal);
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
 
         //Aqui es donde se reciben los paquetes y se tiene que hacer concurrente
-        try{
 
             ServerSocket socketServidor = new ServerSocket(9002);
             int i = 0;
@@ -66,9 +113,25 @@ public class Anillo {
                 }           
                 
             }
-        }catch (Exception e){
+
+        
+        
+        } catch (RemoteException e) {
+            //TODO: handle exception
+            System.out.println("Ocurrio un RemoteException: " + e.getMessage());
+        }
+        catch (NotBoundException e) {
+            //TODO: handle exception
+            System.out.println("Ocurrio un NotBoundException: " + e.getMessage());
+        }
+        catch (InterruptedException  e) {
+            //TODO: handle exception
+            System.out.println("Ocurrio un InterruptedException: " + e.getMessage() + "\nProbablemente un hilo se cerro inesperadamente");
+        }
+        catch (Exception e){
             
-            System.out.println(e.getMessage());
+            System.out.println("Ocurrio una excepcion: " + e.getMessage());
+            
         }
         
     }
