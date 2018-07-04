@@ -14,12 +14,13 @@ import java.rmi.server.UnicastRemoteObject;
         // the following line is magic, took me aroud 1 hour to git it to work...Gian.
         System.setProperty("java.rmi.server.hostname","192.168.1.249");
          // Instantiating the implementation class 
-         ImplRingInfo obj = new ImplRingInfo(); 
+         ImplRingInfo obj1 = new ImplRingInfo(); 
+         ImplEstadisticas obj2 = new ImplEstadisticas();
     
          // Exporting the object of implementation class  
          // (here we are exporting the remote object to the stub) 
-         RingInfo ringInfoStub = (RingInfo) UnicastRemoteObject.exportObject((Remote) obj, Registry.REGISTRY_PORT);  
-         Estadisticas estadisticasStub = (Estadisticas) UnicastRemoteObject.exportObject((Remote) obj, Registry.REGISTRY_PORT);  
+         RingInfo ringInfoStub = (RingInfo) UnicastRemoteObject.exportObject((Remote) obj1, Registry.REGISTRY_PORT);  
+         Estadisticas estadisticasStub = (Estadisticas) UnicastRemoteObject.exportObject((Remote) obj2, Registry.REGISTRY_PORT);  
 
          // Binding the remote object (stub) in the registry 
          Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);

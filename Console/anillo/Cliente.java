@@ -153,7 +153,7 @@ public class Cliente extends Thread{
 
 
        // source: https://stackoverflow.com/a/20418809
-    private static InetAddress getLocalHostLANAddress() throws UnknownHostException {
+    public static InetAddress getLocalHostLANAddress() throws UnknownHostException {
         try {
             InetAddress candidateAddress = null;
             // Iterate all NICs (network interface cards)...
