@@ -132,7 +132,7 @@ public class Cliente extends Thread{
 
 
             } catch (Exception ex) {
-
+                System.out.println("Hay " + intentos + " de conexion");
                 if (intentos < 3 ){
                     //Aqui se hace el fallo para cambiar de ip
                     System.out.println("Reintentando conexion");
