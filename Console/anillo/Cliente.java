@@ -107,15 +107,17 @@ public class Cliente extends Thread{
     }
 
     public void enviarToken( Transporte transporte , int intentos){
+        System.out.println("Hay " + intentos + " de conexion");
+
         try {
                 if(transporte._paquetes.size() == 0){
                     System.out.println("Enviar ---> Envio Transporte (id:" +transporte._id+") VACIO al siguiente nodo");
                     //return;
                 }
                 else{
-                    System.out.println("Tengo " +transporte._paquetes.size()+" paquetes");
-
+                    System.out.println("El transporte " + transporte._id + " tiene " + transporte._paquetes.size()+" paquetes");
                     System.out.println("Enviar ---> Envio Transporte (id:" +transporte._id+") al siguiente nodo");
+                    transporte.imprimirPaquetes();
                 }
                 // envialo al siguiente nodo
                 
@@ -132,11 +134,14 @@ public class Cliente extends Thread{
 
 
             } catch (Exception ex) {
+                System.out.println("Error: "+ ex.getMessage());
                 System.out.println("Hay " + intentos + " de conexion");
-                if (intentos < 3 ){
+                intentos++;
+                if ( intentos < 3 ){
                     //Aqui se hace el fallo para cambiar de ip
+                    try{sleep(5000);}catch( InterruptedException e){ } 
                     System.out.println("Reintentando conexion");
-                    enviarToken( transporte ,intentos++ );
+                    enviarToken( transporte ,intentos);
                 }else{
 
                     intentos = 0;
@@ -153,9 +158,17 @@ public class Cliente extends Thread{
 
     public Transporte cargandoTransporte( Transporte transporte){
         Packets instancia = Packets.getInstance();
+        System.out.println("Numero de paquetes en la cola " + instancia.tamano());
         //Verificando si puedo montar algo en el transporte
         try{
             //Mientras el transpote tenga menos de 5 paquetes
+
+            if( transporte._paquetes.size() == 5){
+                System.out.println("Info ------>El transporte esta lleno");
+            }else{
+                System.out.println("Info ------> El transporte tiene espacio");
+            }
+
             while ( transporte._paquetes.size() <  5){
                 //Si tengo paquetes en la cola
                 if ( instancia.tamano() > 0) {

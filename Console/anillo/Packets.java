@@ -18,7 +18,8 @@ public class Packets {
         return _paquetes.size();
     }
     public static Packets getInstance(){
-        int cantidadPaquetes = ThreadLocalRandom.current().nextInt(0,2);
+        // determina los destinos de cada paquete
+        int cantidadPaquetes = ThreadLocalRandom.current().nextInt(0,4);
 
         if (instancia == null) {
             instancia = new Packets();

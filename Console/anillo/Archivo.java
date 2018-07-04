@@ -19,15 +19,15 @@ public class Archivo {
 
     }
     
-    public void crearArchivo(){
+    public void crearArchivo(String nombreArchivo){
         try{
-            File f = new File("Estadisticas.txt");
+            File f = new File();
             if (f.exists() && !f.isDirectory()){
-                FileWriter fw = new FileWriter("Estadisticas.txt", true);
+                FileWriter fw = new FileWriter(nombreArchivo, true);
                 fw.write( _creacion );
                 fw.close();
             }else{
-                FileWriter fw = new FileWriter("Estadisticas.txt");
+                FileWriter fw = new FileWriter();
                 fw.write( _creacion );
                 fw.close();
 

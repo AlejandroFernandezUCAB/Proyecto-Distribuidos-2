@@ -28,6 +28,14 @@ public class Transporte {
     public void setPaquetes(ArrayList<Paquete> _paquetes) {
         this._paquetes = _paquetes;
     }
+
+    public void imprimirPaquetes(){
+        System.out.print("Transporte id: " + this._id + " --> ");
+        for (int i = 0; i < this._paquetes.size(); i++) {
+            System.out.printf("[ %d ] ",this._paquetes.get(i)._carga);
+        }
+        System.out.println("");
+    }
     
     
 }

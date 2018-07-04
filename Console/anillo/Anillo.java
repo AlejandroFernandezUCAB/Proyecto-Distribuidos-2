@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.NotBoundException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.net.*;
 // import java.util.Enumeration;
 
@@ -31,7 +32,7 @@ public class Anillo {
         Estadisticas _estadisticas = null;
         try {
             // Getting the registry (Servidor de estadisticas: 192.168.1.249)
-            registry = LocateRegistry.getRegistry("192.168.1.2",Registry.REGISTRY_PORT);
+            registry = LocateRegistry.getRegistry("192.168.1.106",Registry.REGISTRY_PORT);
             // Looking up the registry for the remote objects 
             _ringInfo = (RingInfo) registry.lookup("RingInfo"); 
             _estadisticas = (Estadisticas) registry.lookup("Estadisticas"); 
@@ -48,10 +49,10 @@ public class Anillo {
          
          // Esta rutina seria para esperar que el anillo se complete
          // un tamano especifico
-         if(addresses.size() < 2){
+         if(addresses.size() < 4){
             System.out.print("The ring must have at least 4 nodes");
             System.out.print("Waiting for the nodes to join...");
-            while (addresses.size() < 2) {
+            while (addresses.size() < 4) {
                 Thread.sleep(3000);
                 addresses = (List<String>)_ringInfo.ringAddresses();    
             }
@@ -64,7 +65,7 @@ public class Anillo {
 
         int numeroNodo = addresses.indexOf(IP.getHostAddress());
         // el siguiente, hay 4 nodos
-        String serverAddress = addresses.get((numeroNodo + 1)%2);
+        String serverAddress = addresses.get((numeroNodo + 1)%4);
         int tiempoDeSalida = 5;
         Boolean servidorPrincipal = (numeroNodo == 0);
 
@@ -150,15 +151,19 @@ public class Anillo {
                 
                 paquetes = new ArrayList<>();
                 //For de adentro para llenar los paquetes
-                for (int j = 0; j < 5; j++) {
+                for (int j = 0; j < ThreadLocalRandom.current().nextInt(0,4); j++) {
                     paquete = new Paquete();
                     paquetes.add(paquete);
                 }
 
+                
                 transporte = new Transporte(i, paquetes);
+                transporte.imprimirPaquetes();
                 transportes.add(transporte);
+                
             }
 
+            
             return transportes;
         }
         return null;

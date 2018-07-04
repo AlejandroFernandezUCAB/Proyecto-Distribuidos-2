@@ -14,7 +14,7 @@ public class Escritorio extends Thread{
             sleep(10000);
             //Procedo a guardar en el archivo el paquete
             Archivo archivo = new Archivo( String.valueOf(_paquete._carga) + " " +String.valueOf(_paquete._tiempo) );
-            archivo.crearArchivo();
+            archivo.crearArchivo("Estadisticas.txt");
             //Matando el hilos
             instancia.removeWorker();
             interrupt();
