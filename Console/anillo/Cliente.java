@@ -54,7 +54,7 @@ public class Cliente extends Thread{
                 if( paquete._nodoDestino == numeroNodo ){
                    
                     //Se queda pegado esperando que alguien se libere
-                    sleep(1000);
+                    sleep(5000);
                     while ( siHayTrabajadores == false ) {
 
                         if (instancia.getCount() < 3 ){
