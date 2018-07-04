@@ -18,7 +18,7 @@ public class Packets {
         return _paquetes.size();
     }
     public static Packets getInstance(){
-        int cantidadPaquetes = ThreadLocalRandom.current().nextInt(0,1);
+        int cantidadPaquetes = ThreadLocalRandom.current().nextInt(0,2);
 
         if (instancia == null) {
             instancia = new Packets();
@@ -31,9 +31,6 @@ public class Packets {
 
     }
 
-    public int getCount(){
-        return count;
-    }
 
     public void addPacket(){
         count++;
