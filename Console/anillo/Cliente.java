@@ -47,18 +47,33 @@ public class Cliente extends Thread{
             try {
 
                 Paquete paquete = transporte._paquetes.get(i);
-                
+                Boolean siHayTrabajadores = false;
 
                 //Si esto sucede es porque es para mi y lo saco de donde esta
-                if( paquete._nodoDestino == numeroNodo && instancia.getCount() < 3 ){
+                if( paquete._nodoDestino == numeroNodo ){
                    
-                    //Ejecutando el hilo del cliente
-                    Escritorio _escritorioHilo = new Escritorio( transporte._paquetes.get(i));
-                    instancia.addWorker();
-                    _escritorioHilo.start();
-                    System.out.println("Hay" + instancia.getCount() + " Trabajadores activos");
-                    System.out.println("Procesar ---> Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
-                    transporte._paquetes.remove(i);
+                    //Se queda pegado esperando que alguien se libere
+                    sleep(1000);
+                    while ( siHayTrabajadores == false ) {
+
+                        if (instancia.getCount() < 2 ){
+                            //Ejecutando el hilo del cliente
+                            Escritorio _escritorioHilo = new Escritorio( transporte._paquetes.get(i));
+                            instancia.addWorker();
+                            _escritorioHilo.start();
+                            System.out.println("Hay" + instancia.getCount() + " Trabajadores activos");
+                            System.out.println("Procesar ---> Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
+                            transporte._paquetes.remove(i);
+                            siHayTrabajadores = true;
+
+                        }else{
+
+                            System.out.println("Todos los trabajdores andan ocupados, espere un momento");
+
+                        }
+
+                    }
+
                     
                 }else{
                     
