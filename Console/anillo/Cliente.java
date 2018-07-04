@@ -1,6 +1,5 @@
 import com.google.gson.Gson;
 
-import org.omg.DynamicAny._DynArrayStub;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -90,7 +89,7 @@ public class Cliente extends Thread{
                     String gsonAEnviar = gson.toJson( transporte, Transporte.class);
                     // enviamos por el socket del servidor
                     // (el siguiente nodo)
-                    Socket socket = new Socket(this.nextNodeAddress, 9001);
+                    Socket socket = new Socket(this.nextNodeAddress, 9002);
                     PrintWriter out =
                             new PrintWriter(socket.getOutputStream(), true);
                         //Se manda a traves del socket

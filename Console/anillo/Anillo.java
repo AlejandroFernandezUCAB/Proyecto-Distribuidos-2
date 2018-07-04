@@ -17,6 +17,9 @@ public class Anillo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Packets colaDePaquetes = Packets.getInstance();
+        System.out.println("Se crearon:" + colaDePaquetes.tamano() + " Paquetes");
+
         Scanner reader = new Scanner(System.in);
         // serverAddress = direccion del siguiente nodo del anillo
         //String serverAddress = "192.168.1.250";
@@ -37,7 +40,7 @@ public class Anillo {
 
         //Aqui es donde se reciben los paquetes y se tiene que hacer concurrente
         try{
-            
+
             ServerSocket socketServidor = new ServerSocket(9001);
             int i = 0;
             int transportesRecibidos = 0;
@@ -93,10 +96,13 @@ public class Anillo {
                 transporte = new Transporte(i, paquetes);
                 transportes.add(transporte);
             }
+
             return transportes;
         }
         return null;
     }
+
+    
     
     public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
        
