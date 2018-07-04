@@ -26,6 +26,7 @@ public class Cliente extends Thread{
             transporte = parseGson.fromJson( answer , Transporte.class);            
             _socket.close();
             transporte = procesamientoDePaquetes(transporte, _numeroNodo);
+            transporte = cargandoTransporte( transporte );
             enviarToken(transporte);
             
         }catch( Exception e){
@@ -48,18 +49,33 @@ public class Cliente extends Thread{
             try {
 
                 Paquete paquete = transporte._paquetes.get(i);
-                
+                Boolean siHayTrabajadores = false;
 
                 //Si esto sucede es porque es para mi y lo saco de donde esta
-                if( paquete._nodoDestino == numeroNodo && instancia.getCount() < 3 ){
+                if( paquete._nodoDestino == numeroNodo ){
                    
-                    //Ejecutando el hilo del cliente
-                    Escritorio _escritorioHilo = new Escritorio( transporte._paquetes.get(i));
-                    instancia.addWorker();
-                    _escritorioHilo.start();
-                    System.out.println("Hay" + instancia.getCount() + " Trabajadores activos");
-                    System.out.println("Procesar ---> Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
-                    transporte._paquetes.remove(i);
+                    //Se queda pegado esperando que alguien se libere
+                    
+                    while ( siHayTrabajadores == false ) {
+
+                        if (instancia.getCount() < 3 ){
+                            //Ejecutando el hilo del cliente
+                            Escritorio _escritorioHilo = new Escritorio( transporte._paquetes.get(i));
+                            instancia.addWorker();
+                            _escritorioHilo.start();
+                            System.out.println("Hay" + instancia.getCount() + " Trabajadores activos");
+                            System.out.println("Procesar ---> Recibi un Paquete! lo quito del Transporte (id:" +transporte._id+")");
+                            transporte._paquetes.remove(i);
+                            siHayTrabajadores = true;
+
+                        }else{
+                            sleep(2000);
+                            System.out.println("Todos los trabajdores andan ocupados, espere un momento");
+
+                        }
+
+                    }
+
                     
                 }else{
                     
@@ -80,6 +96,8 @@ public class Cliente extends Thread{
                     //return;
                 }
                 else{
+                    System.out.println("Tengo " +transporte._paquetes.size()+" paquetes");
+
                     System.out.println("Enviar ---> Envio Transporte (id:" +transporte._id+") al siguiente nodo");
                 }
                 // envialo al siguiente nodo
@@ -97,8 +115,40 @@ public class Cliente extends Thread{
                         out.println( gsonAEnviar );
 
 
-            } catch (IOException | InterruptedException ex) {
+            } catch (Exception ex) {
+                //Aqui se hace el fallo para cambiar de ip
+                System.out.println("Reintentando conexion");
+                enviarToken( transporte );
         }
+        
+    }
+
+    public Transporte cargandoTransporte( Transporte transporte){
+        Packets instancia = Packets.getInstance();
+        //Verificando si puedo montar algo en el transporte
+        try{
+            //Mientras el transpote tenga menos de 5 paquetes
+            while ( transporte._paquetes.size() <  5){
+                //Si tengo paquetes en la cola
+                if ( instancia.tamano() > 0) {
+                    System.out.println("Cargando un paquete al transporte (id:"+ transporte._id +" )");
+                    sleep(10000);
+                    //Aqui elimino el paquete del array de la instacia y lo agrego al transporte
+                    transporte._paquetes.add( instancia.removePacket( _numeroNodo ) ); 
+                } else {
+
+                    break;
+                }
+
+               
+
+            }
+        }catch(InterruptedException e){
+            System.out.println(e.getMessage());
+        }
+        
+        return transporte;
+
     }
 
 

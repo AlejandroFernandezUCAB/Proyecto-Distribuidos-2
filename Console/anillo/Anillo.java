@@ -111,7 +111,7 @@ public class Anillo {
             Transporte transporte;
 
             //For de afuera para llenar el transporte
-            for (int i = 0; i < 3; i++) {
+            for (int i = 1; i <= 3; i++) {
                 
                 paquetes = new ArrayList<>();
                 //For de adentro para llenar los paquetes
@@ -132,7 +132,7 @@ public class Anillo {
     
     
     public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
-       
+        
         if (servidorPrincipal == true){
             System.out.println("Enviar ---> Enviando Transportes");
             try {

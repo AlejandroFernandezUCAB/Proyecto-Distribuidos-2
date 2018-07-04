@@ -18,7 +18,7 @@ public class Packets {
         return _paquetes.size();
     }
     public static Packets getInstance(){
-        int cantidadPaquetes = ThreadLocalRandom.current().nextInt(0,5);
+        int cantidadPaquetes = ThreadLocalRandom.current().nextInt(0,2);
 
         if (instancia == null) {
             instancia = new Packets();
@@ -31,29 +31,35 @@ public class Packets {
 
     }
 
-    public int getCount(){
-        return count;
-    }
 
     public void addPacket(){
         count++;
     }
 
-    public void removePacket( int nodoDestino){
+    public Paquete removePacket( int nodoDestino){
+        Paquete paquete = new Paquete();
         boolean suiche = false;
+
         for (int i = 0; i < _paquetes.size(); i++) {
+            //Al encontra el primero se rompe el ciclo
             if( _paquetes.get(i)._nodoDestino == nodoDestino){
-                System.out.println( "El paquete tenia como destino:" + _paquetes.get(i)._nodoDestino);
+                paquete._carga = _paquetes.get(i)._carga;
+                paquete._nodoDestino = _paquetes.get(i)._nodoDestino;
+                paquete._tiempo = _paquetes.get(i)._tiempo;
                 _paquetes.remove(i);
                 suiche = true;
+                break;
             }
         }
 
         if (suiche == true) {
             System.out.println("Se elimino algun elemento");
+
         }else{
             System.out.println("No se elimino nada");
         }
+
+        return paquete;
     }
     
 }
