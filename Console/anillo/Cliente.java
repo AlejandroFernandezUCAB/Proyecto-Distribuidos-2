@@ -95,6 +95,8 @@ public class Cliente extends Thread{
                     //return;
                 }
                 else{
+                    System.out.println("Tengo " +transporte._paquetes.size()+" paquetes");
+
                     System.out.println("Enviar ---> Envio Transporte (id:" +transporte._id+") al siguiente nodo");
                 }
                 // envialo al siguiente nodo
@@ -119,12 +121,11 @@ public class Cliente extends Thread{
 
     public Transporte cargandoTransporte( Transporte transporte){
         Packets instancia = Packets.getInstance();
-        System.out.println("Info ----------> Cargando transporte");
+        //Verificando si puedo montar algo en el transporte
         try{
             //Mientras el transpote tenga menos de 5 paquetes
             while ( transporte._paquetes.size() <  5){
-                System.out.println("Verificando cuando paquetes tengo en el transporte:" + transporte._paquetes.size());
-                System.out.println("Verificando Paquetes en cola" + instancia.tamano());
+                System.out.println("Info ----------> Cargando transporte");
                 //Si tengo paquetes en la cola
                 if ( instancia.tamano() > 0) {
                     System.out.println("Cargando un paquete al transporte (id:"+ transporte._id +" )");
@@ -132,6 +133,7 @@ public class Cliente extends Thread{
                     //Aqui elimino el paquete del array de la instacia y lo agrego al transporte
                     transporte._paquetes.add( instancia.removePacket( _numeroNodo ) ); 
                 } else {
+
                     break;
                 }
 
