@@ -119,20 +119,24 @@ public class Cliente extends Thread{
 
     public Transporte cargandoTransporte( Transporte transporte){
         Packets instancia = Packets.getInstance();
-        
-        //Mientras el transpote tenga menos de 5 paquetes
-        while ( transporte._paquetes.size() < 5){
+        try{
+            //Mientras el transpote tenga menos de 5 paquetes
+            while ( transporte._paquetes.size() < 5){
 
-            //Si tengo paquetes en la cola
-            if ( instancia.getCount() > 0) {
-                System.out.println("Cargando un paquete al transporte (id:"+ transporte._id +" )");
-                sleep(10000);
-                //Aqui elimino el paquete del array de la instacia y lo agrego al transporte
-                transporte._paquetes.add( instancia.removePacket( _numeroNodo ) ); 
+                //Si tengo paquetes en la cola
+                if ( instancia.getCount() > 0) {
+                    System.out.println("Cargando un paquete al transporte (id:"+ transporte._id +" )");
+                    sleep(10000);
+                    //Aqui elimino el paquete del array de la instacia y lo agrego al transporte
+                    transporte._paquetes.add( instancia.removePacket( _numeroNodo ) ); 
+                }
+
             }
-
+        }catch(InterruptedException e){
+            System.out.println(e.getMessage());
         }
-        return null;
+        
+        return transporte;
 
     }
 }
