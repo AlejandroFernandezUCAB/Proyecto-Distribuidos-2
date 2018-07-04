@@ -10,6 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.util.Scanner;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.NotBoundException;
 
 public class Anillo {
 
@@ -17,6 +21,19 @@ public class Anillo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Registry registry = null;
+        // usa este objeto para obtener la info del anillo del servidor
+        RingInfo _ringInfo = null;
+        // usa este objeto para proveer data al servidor de estadisticas
+        Estadisticas _estadisticas = null;
+        try {
+            // Getting the registry (Servidor de estadisticas: 192.168.1.249)
+            registry = LocateRegistry.getRegistry("192.168.1.249",Registry.REGISTRY_PORT);
+            // Looking up the registry for the remote objects 
+            _ringInfo = (RingInfo) registry.lookup("RingInfo"); 
+            _estadisticas = (Estadisticas) registry.lookup("Estadisticas"); 
+
+
         Packets colaDePaquetes = Packets.getInstance();
         System.out.println("Se crearon:" + colaDePaquetes.tamano() + " Paquetes");
 
@@ -39,7 +56,6 @@ public class Anillo {
         envioDePaquetes( servidorPrincipal, serverAddress, tiempoDeSalida, cargaUtil);
 
         //Aqui es donde se reciben los paquetes y se tiene que hacer concurrente
-        try{
 
             ServerSocket socketServidor = new ServerSocket(9002);
             int i = 0;
@@ -66,9 +82,20 @@ public class Anillo {
                 }           
                 
             }
-        }catch (Exception e){
+
+        
+        
+        } catch (RemoteException e) {
+            //TODO: handle exception
+            System.out.println("Ocurrio un RemoteException: " + e.getMessage());
+        }
+        catch (NotBoundException e) {
+            //TODO: handle exception
+            System.out.println("Ocurrio un NotBoundException: " + e.getMessage());
+        }
+        catch (Exception e){
             
-            System.out.println(e.getMessage());
+            System.out.println("Ocurrio una excepcion: " + e.getMessage());
             
         }
         

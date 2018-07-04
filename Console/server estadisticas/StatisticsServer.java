@@ -4,8 +4,11 @@ import java.rmi.Remote;
 import java.rmi.RemoteException; 
 import java.rmi.server.UnicastRemoteObject; 
 
-public class Server { 
-   public Server() {} 
+// public class StatisticsServer extends ImplRingInfo { 
+  public class StatisticsServer { 
+
+   public StatisticsServer() {} 
+   
    public static void main(String args[]) { 
       try { 
         // the following line is magic, took me aroud 1 hour to git it to work...Gian.
@@ -15,13 +18,16 @@ public class Server {
     
          // Exporting the object of implementation class  
          // (here we are exporting the remote object to the stub) 
-         RingInfo stub = (RingInfo) UnicastRemoteObject.exportObject((Remote) obj, Registry.REGISTRY_PORT);  
-         
+         RingInfo ringInfoStub = (RingInfo) UnicastRemoteObject.exportObject((Remote) obj, Registry.REGISTRY_PORT);  
+         Estadisticas estadisticasStub = (Estadisticas) UnicastRemoteObject.exportObject((Remote) obj, Registry.REGISTRY_PORT);  
+
          // Binding the remote object (stub) in the registry 
          Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
         //  System.setProperty("java.rmi.server.hostname","192.168.1.249");
 
-         registry.rebind("RingInfo", stub);  
+         registry.rebind("RingInfo", ringInfoStub);
+         registry.rebind("Estadisticas", estadisticasStub);
+         
          System.err.println("Server ready"); 
       } catch (Exception e) { 
          System.err.println("Server exception: " + e.toString()); 
