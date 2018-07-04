@@ -25,6 +25,7 @@ public class Cliente extends Thread{
             transporte = parseGson.fromJson( answer , Transporte.class);            
             _socket.close();
             transporte = procesamientoDePaquetes(transporte, _numeroNodo);
+            transporte = cargandoTransporte( transporte );
             enviarToken(transporte);
             
         }catch( Exception e){
@@ -56,7 +57,7 @@ public class Cliente extends Thread{
                     sleep(1000);
                     while ( siHayTrabajadores == false ) {
 
-                        if (instancia.getCount() < 2 ){
+                        if (instancia.getCount() < 3 ){
                             //Ejecutando el hilo del cliente
                             Escritorio _escritorioHilo = new Escritorio( transporte._paquetes.get(i));
                             instancia.addWorker();
@@ -113,5 +114,25 @@ public class Cliente extends Thread{
 
             } catch (IOException | InterruptedException ex) {
         }
+        
+    }
+
+    public Transporte cargandoTransporte( Transporte transporte){
+        Packets instancia = Packets.getInstance();
+        
+        //Mientras el transpote tenga menos de 5 paquetes
+        while ( transporte._paquetes.size() < 5){
+
+            //Si tengo paquetes en la cola
+            if ( instancia.getCount() > 0) {
+                System.out.println("Cargando un paquete al transporte (id:"+ transporte._id +" )");
+                sleep(10000);
+                //Aqui elimino el paquete del array de la instacia y lo agrego al transporte
+                transporte._paquetes.add( instancia.removePacket( _numeroNodo ) ); 
+            }
+
+        }
+        return null;
+
     }
 }
