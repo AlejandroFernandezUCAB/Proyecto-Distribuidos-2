@@ -33,7 +33,7 @@ public class Packets {
 
 
     public void addPacket(){
-        count++;
+       // count++;
     }
 
     public Paquete removePacket( int nodoDestino){
