@@ -8,12 +8,14 @@ import java.net.UnknownHostException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+import java.util.List;
 
 public class Cliente extends Thread{
     
     public Socket _socket;
     public int _numeroNodo;
     String nextNodeAddress;
+    List<String> addresses;
 
     public void run(){
         try {
@@ -27,17 +29,32 @@ public class Cliente extends Thread{
             _socket.close();
             transporte = procesamientoDePaquetes(transporte, _numeroNodo);
             transporte = cargandoTransporte( transporte );
-            enviarToken(transporte);
+            enviarToken(transporte,0);
             
         }catch( Exception e){
             System.out.println();
         } 
     }
 
-    public Cliente(Socket _socket, int _numeroNodo, String nextNode) {
+    public void obtenerSiguienteIp(){
+        for (int i = 0; i < addresses.size(); i++) {
+            //Si es el ultimo elemento, dame el primer nodo
+            if( i == (addresses.size()-1)){
+                this.nextNodeAddress = addresses.get(0);
+            //Si al que queria enviar es el siguiente y ademas es el fin dame el primero de nuevo
+            }else if( this.nextNodeAddress == addresses.get(i) &&  ( i == (addresses.size()-1)) ){
+                this.nextNodeAddress = addresses.get(0);
+            } else if( this.nextNodeAddress == addresses.get(i) ){
+                this.nextNodeAddress = addresses.get(i+1);
+            }
+        }
+    }
+
+    public Cliente(Socket _socket, int _numeroNodo, String nextNode, List<String> addresses) {
         this._socket = _socket;
         this._numeroNodo = _numeroNodo;
         this.nextNodeAddress = nextNode;
+        this.addresses = addresses;
     }
     
     
@@ -89,7 +106,7 @@ public class Cliente extends Thread{
         return transporte;
     }
 
-    public void enviarToken( Transporte transporte ){
+    public void enviarToken( Transporte transporte , int intentos){
         try {
                 if(transporte._paquetes.size() == 0){
                     System.out.println("Enviar ---> Envio Transporte (id:" +transporte._id+") VACIO al siguiente nodo");
@@ -102,7 +119,6 @@ public class Cliente extends Thread{
                 }
                 // envialo al siguiente nodo
                 
-                    Thread.sleep(5000);
                     // serializamos
                     Gson gson = new Gson();
                     String gsonAEnviar = gson.toJson( transporte, Transporte.class);
@@ -116,9 +132,21 @@ public class Cliente extends Thread{
 
 
             } catch (Exception ex) {
-                //Aqui se hace el fallo para cambiar de ip
-                System.out.println("Reintentando conexion");
-                enviarToken( transporte );
+                System.out.println("Hay " + intentos + " de conexion");
+                if (intentos < 3 ){
+                    //Aqui se hace el fallo para cambiar de ip
+                    System.out.println("Reintentando conexion");
+                    enviarToken( transporte ,intentos++ );
+                }else{
+
+                    intentos = 0;
+                    obtenerSiguienteIp();
+                    System.out.println(this.nextNodeAddress);
+                    enviarToken(transporte, 0);
+
+                }
+
+                
         }
         
     }

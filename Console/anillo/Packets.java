@@ -8,10 +8,10 @@ public class Packets {
     private static Packets instancia = null;
     public static ArrayList<Paquete> _paquetes =  new ArrayList<Paquete>();
 
-    private int count;
+
 
     private Packets(){
-        count = 0;
+
     }
 
     public int tamano(){
@@ -33,7 +33,7 @@ public class Packets {
 
 
     public void addPacket(){
-        count++;
+       // count++;
     }
 
     public Paquete removePacket( int nodoDestino){

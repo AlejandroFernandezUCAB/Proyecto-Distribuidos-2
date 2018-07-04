@@ -12,7 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
    public static void main(String args[]) { 
       try { 
         // the following line is magic, took me aroud 1 hour to git it to work...Gian.
-        System.setProperty("java.rmi.server.hostname","192.168.1.249");
+        System.setProperty("java.rmi.server.hostname","192.168.1.2");
          // Instantiating the implementation class 
          ImplRingInfo obj1 = new ImplRingInfo(); 
          ImplEstadisticas obj2 = new ImplEstadisticas();

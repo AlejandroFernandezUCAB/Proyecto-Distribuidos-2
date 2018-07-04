@@ -31,7 +31,7 @@ public class Anillo {
         Estadisticas _estadisticas = null;
         try {
             // Getting the registry (Servidor de estadisticas: 192.168.1.249)
-            registry = LocateRegistry.getRegistry("192.168.1.249",Registry.REGISTRY_PORT);
+            registry = LocateRegistry.getRegistry("192.168.1.2",Registry.REGISTRY_PORT);
             // Looking up the registry for the remote objects 
             _ringInfo = (RingInfo) registry.lookup("RingInfo"); 
             _estadisticas = (Estadisticas) registry.lookup("Estadisticas"); 
@@ -48,10 +48,10 @@ public class Anillo {
          
          // Esta rutina seria para esperar que el anillo se complete
          // un tamano especifico
-         if(addresses.size() < 4){
+         if(addresses.size() < 2){
             System.out.print("The ring must have at least 4 nodes");
             System.out.print("Waiting for the nodes to join...");
-            while (addresses.size() < 4) {
+            while (addresses.size() < 2) {
                 Thread.sleep(3000);
                 addresses = (List<String>)_ringInfo.ringAddresses();    
             }
@@ -64,7 +64,7 @@ public class Anillo {
 
         int numeroNodo = addresses.indexOf(IP.getHostAddress());
         // el siguiente, hay 4 nodos
-        String serverAddress = addresses.get((numeroNodo+1)%4);
+        String serverAddress = addresses.get((numeroNodo + 1)%2);
         int tiempoDeSalida = 5;
         Boolean servidorPrincipal = (numeroNodo == 0);
 
@@ -99,7 +99,7 @@ public class Anillo {
                 // osea se convierte en servidor
                 Socket socket = socketServidor.accept();
                 // aca el serverAddress seria la ip del siguiente nodo
-                Cliente cliente = new Cliente(socket, numeroNodo, serverAddress);
+                Cliente cliente = new Cliente(socket, numeroNodo, serverAddress, addresses);
                 cliente.start();
                 
                 transportesRecibidos++;
