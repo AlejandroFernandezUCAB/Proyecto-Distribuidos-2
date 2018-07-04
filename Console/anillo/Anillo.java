@@ -32,7 +32,7 @@ public class Anillo {
         // identificador de este nodo en el anillo
         System.out.print("Numero de nodo: ");
         int numeroNodo = reader.nextInt();
-        
+        reader.close();
         System.out.println("Iniciado el nodo " + numeroNodo);
         
         ArrayList<Transporte> cargaUtil = cargaUtil(servidorPrincipal);
@@ -69,7 +69,6 @@ public class Anillo {
         }catch (Exception e){
             
             System.out.println(e.getMessage());
-            
         }
         
     }
