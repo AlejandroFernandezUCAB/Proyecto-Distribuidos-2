@@ -13,7 +13,7 @@ public class Cliente extends Thread{
     public Socket _socket;
     public int _numeroNodo;
     String nextNodeAddress;
-    
+
     public void run(){
         try {
             //Se setea por donde se envia
