@@ -1,5 +1,6 @@
 /**
- * ActiveWorkers
+ * ActiveWorkers clase con singleton para saber en todos lados del programa cuantos escritorios estan activos,
+    Independientemente el hilo
  */
 public class ActiveWorkers {
     private static ActiveWorkers instancia = null;

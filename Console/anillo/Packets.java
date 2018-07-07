@@ -2,7 +2,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
 
 /**
- * Packets
+ * Clase con patron singleton para tener en todos lados los mismos paquetes, independientemente el hilo
  */
 public class Packets {
     private static Packets instancia = null;
@@ -17,6 +17,7 @@ public class Packets {
     public int tamano(){
         return _paquetes.size();
     }
+
     public static Packets getInstance(){
         // determina los destinos de cada paquete
         int cantidadPaquetes = ThreadLocalRandom.current().nextInt(0,4);

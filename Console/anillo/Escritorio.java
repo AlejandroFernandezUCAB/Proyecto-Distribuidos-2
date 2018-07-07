@@ -1,3 +1,7 @@
+
+/**
+    Clase tipo hilo para el proceso de paquetes, ademas guarda en un archivo carga util y paquetes
+ */
 public class Escritorio extends Thread{
     
     public Paquete _paquete;
