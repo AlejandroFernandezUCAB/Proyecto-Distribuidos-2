@@ -19,6 +19,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.net.*;
 // import java.util.Enumeration;
 
+/**
+ *Clase para la iniciacion de la simulacion
+ */
 public class Anillo {
 
     /**
@@ -69,19 +72,6 @@ public class Anillo {
         int tiempoDeSalida = 5;
         Boolean servidorPrincipal = (numeroNodo == 0);
 
-        // Scanner reader = new Scanner(System.in);
-        // // serverAddress = direccion del siguiente nodo del anillo
-        // //String serverAddress = "192.168.1.250";
-        // System.out.println("Ip del siguiente nodo:");
-        // String serverAddress = reader.nextLine();
-        // System.out.println("Es usted el que genera los transportes?\nSolo Puede haber uno (1:si / 0: no):");
-        // int reply = reader.nextInt();
-        // Boolean servidorPrincipal = (reply == 1);
-        
-        // // identificador de este nodo en el anillo
-        // System.out.print("Numero de nodo: ");
-        // int numeroNodo = reader.nextInt();
-        
         System.out.println("Iniciado el nodo " + numeroNodo);
         
         ArrayList<Transporte> cargaUtil = cargaUtil(servidorPrincipal);
@@ -136,7 +126,10 @@ public class Anillo {
         }
         
     }
- 
+    
+    /**
+    * Metodo para iniciar la carga util del primer nodo.
+     */
     public static ArrayList<Transporte> cargaUtil(Boolean servidorPrincipal){
         // si no eres un servidor principal no tienes que generar la carga util
         if(servidorPrincipal == true){
@@ -170,7 +163,9 @@ public class Anillo {
     }
 
     
-    
+    /*
+    * Metodo para enviar los paquetes a traves del anillo
+    */
     public static void envioDePaquetes(Boolean servidorPrincipal, String serverAddress, int tiempoDeSalida, ArrayList<Transporte> cargaUtil){
         
         if (servidorPrincipal == true){

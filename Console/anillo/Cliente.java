@@ -10,6 +10,9 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.List;
 
+/*
+* Clase que extiende de hilos para procesar un transporte 
+*/
 public class Cliente extends Thread{
     
     public Socket _socket;
@@ -36,6 +39,9 @@ public class Cliente extends Thread{
         } 
     }
 
+    /*
+    * Metodo para obtener la siguiente ip en el caso de falla que un nodo muera
+     */
     public void obtenerSiguienteIp(){
         for (int i = 0; i < addresses.size(); i++) {
             //Si es el ultimo elemento, dame el primer nodo
@@ -57,7 +63,10 @@ public class Cliente extends Thread{
         this.addresses = addresses;
     }
     
-    
+    /**
+        Metodo para procesar los paquetes de cada transporte,
+        aqui se valida que solo hayan 3 escritorios ocupados
+     */
     public static Transporte procesamientoDePaquetes( Transporte transporte, int numeroNodo){
         ActiveWorkers instancia = ActiveWorkers.getInstance();
         
@@ -106,6 +115,10 @@ public class Cliente extends Thread{
         return transporte;
     }
 
+    /**
+        Metodo para enviar el token, aqui el recibe el transpote a enviar y el numero de intentos que lleva
+        cuando llega a 3 intentos busca la siguiente ip.
+     */
     public void enviarToken( Transporte transporte , int intentos){
         System.out.println("Hay " + intentos + " de conexion");
 
@@ -156,6 +169,10 @@ public class Cliente extends Thread{
         
     }
 
+    /**
+        Metodo para cargar los paquetes que tengo en cola para enviarlos en el transporte
+        Se valida que el transporte solo tenga 5 paquetes
+     */
     public Transporte cargandoTransporte( Transporte transporte){
         Packets instancia = Packets.getInstance();
         System.out.println("Numero de paquetes en la cola " + instancia.tamano());
